@@ -25,10 +25,14 @@ private
   end
 
   def child_params
+    birthdate = params.require(:order)[:child_birthdate]
+    if birthdate.present?
+      birthdate = Date.parse(birthdate)
+    end
     {
       full_name: params.require(:order)[:child_full_name],
       parent_name: params.require(:order)[:shipping_name],
-      birthdate: Date.parse(params.require(:order)[:child_birthdate]),
+      birthdate: birthdate,
     }
   end
 

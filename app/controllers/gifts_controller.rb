@@ -6,7 +6,7 @@ class GiftsController < ApplicationController
     def create
       additional_gift_params = { user_facing_id: SecureRandom.uuid[0..7] }
       child = Child.find_by(child_params)
-      previous_order = Order.find_by(child_id: child.id) if child.present?
+      previous_order = Gift.find_by(child_id: child.id) if child.present?
 
       if previous_order.present?
         additional_gift_params.merge!(child: child, address: previous_order.address, zipcode: previous_order.zipcode)
@@ -32,15 +32,19 @@ class GiftsController < ApplicationController
     end
   
     def child_params
+      birthdate = params.require(:gift)[:child_birthdate]
+      if birthdate.present?
+        birthdate = Date.parse(birthdate)
+      end
       {
         full_name: params.require(:gift)[:child_full_name],
         parent_name: params.require(:gift)[:parent_name],
-        birthdate: Date.parse(params.require(:gift)[:child_birthdate]),
+        birthdate: birthdate,
       }
     end
   
     def credit_card_params
-      params.require(:gift).permit( :credit_card_number, :expiration_month, :expiration_year)
+      params.require(:gift).permit(:credit_card_number, :expiration_month, :expiration_year)
     end
   end
   

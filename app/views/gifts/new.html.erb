@@ -1,6 +1,6 @@
 <% if @gift.errors.any? %>
   <aside class="alert alert-danger m-3" role="alert">
-    <%= @gift.errors.full_messages.join(",") %>
+    <%= @gift.errors.full_messages.join(", ") %>
   </aside>
 <% end %>
 <section class="mt-2 pt-3">

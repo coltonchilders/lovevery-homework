@@ -102,3 +102,14 @@ perfect and there are things that could be improved.  We might ask you about you
 later, but this is all part of the scenario - real-world code is never as nice as we'd like.
 
 ## My Implementation
+I satisfied the requirements of this project by creating a separate flow for gift giving. When the user views the product show page, they can now select to either "Buy Now" or "Send Gift". If they select "Send Gift", they will be taken to the new gift order page, a variation of the order page, where they can input their name, the name and birthdate of the child they wish to send the gift to, the name of the parent of that child, and their credit card information. They can also optionally include a message with their gift. Once they submit their gift order, they will be taken to the new gift order confirmation page, a variation of the order confirmation page, where they will see the usual information confirming their order along with their message, if they submitted one. 
+
+On the backend, this gifting experience is handled by a separate model, view, and controller. I chose this approach because it separates concerns and keeps the original order flow simple. Also, I was specifically asked not to implement a simple boolean solution :)
+
+Additionally, I fixed a bug where the application would throw an error if the order form was submitted with no birthdate value or an invalid date format. I did not fix this for the original order form because it would have required refactoring of the order controller and that was beyond the scope of this project. 
+
+Things to consider in the future:
+ - Add better validation to form so that each field is checked if required and all cases are handled gracefully.
+ - Handle the unlikely case where there are multiple orders with the same child, birthdate, and parent name but different addresses.
+ - Make it easier for users to send gift to child. Currently, they have to guess which parent the child's record is under if the child has multiple parents. Maybe having a unique code that parents could share or having accounts that are tied to phone numbers that could sync with gift giver's contacts. This would also address the previous edge case as the address info would be tied to a unique identifier. 
+  - As the application grows and new features are added, we will have to maintain two separate flows for gift giving and normal orders. This is not scalable. We should refactor to consolidate both flows into one, possibly using a checkbox to indicate that the order is a gift. Once the checkbox is selected, a field for the parent's name would appear and the address and zipcode fields would disappear or be disabled. This would make the code more DRY, but also more complex. However, we could implement helper or service classes to keep the controller clean and simple. 
